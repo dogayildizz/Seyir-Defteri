@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLSeyirDefteri.Core", "CLSeyirDefteri.Core\CLSeyirDefteri.Core.csproj", "{48156486-56CE-46CE-9652-E037EBFA6635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WFASeyirDefteri.UI", "WFASeyirDefteri.UI\WFASeyirDefteri.UI.csproj", "{C5389C69-E13B-47FF-8260-8E2BAF085FBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48156486-56CE-46CE-9652-E037EBFA6635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48156486-56CE-46CE-9652-E037EBFA6635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48156486-56CE-46CE-9652-E037EBFA6635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48156486-56CE-46CE-9652-E037EBFA6635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5389C69-E13B-47FF-8260-8E2BAF085FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5389C69-E13B-47FF-8260-8E2BAF085FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5389C69-E13B-47FF-8260-8E2BAF085FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5389C69-E13B-47FF-8260-8E2BAF085FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
