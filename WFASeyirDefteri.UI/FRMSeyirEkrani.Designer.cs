@@ -42,6 +42,7 @@
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
+            btnGec = new Button();
             SuspendLayout();
             // 
             // label1
@@ -79,7 +80,7 @@
             // 
             btnSeferOlustur.BackColor = SystemColors.ButtonFace;
             btnSeferOlustur.Font = new Font("Times New Roman", 12F);
-            btnSeferOlustur.Location = new Point(324, 259);
+            btnSeferOlustur.Location = new Point(172, 259);
             btnSeferOlustur.Margin = new Padding(4, 3, 4, 3);
             btnSeferOlustur.Name = "btnSeferOlustur";
             btnSeferOlustur.Size = new Size(202, 56);
@@ -192,12 +193,25 @@
             label6.TabIndex = 0;
             label6.Text = "Varış Limanı :";
             // 
+            // btnGec
+            // 
+            btnGec.BackColor = SystemColors.ButtonFace;
+            btnGec.Font = new Font("Times New Roman", 15F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            btnGec.Location = new Point(381, 256);
+            btnGec.Name = "btnGec";
+            btnGec.Size = new Size(202, 56);
+            btnGec.TabIndex = 5;
+            btnGec.Text = "Geç";
+            btnGec.UseVisualStyleBackColor = false;
+            btnGec.Click += btnGec_Click;
+            // 
             // FRMSeyirEkrani
             // 
             AutoScaleDimensions = new SizeF(10F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1144, 684);
+            Controls.Add(btnGec);
             Controls.Add(lvSeferler);
             Controls.Add(btnSeferOlustur);
             Controls.Add(dtpVarisTarihi);
@@ -237,5 +251,6 @@
         private Label label4;
         private Label label5;
         private Label label6;
+        private Button btnGec;
     }
 }

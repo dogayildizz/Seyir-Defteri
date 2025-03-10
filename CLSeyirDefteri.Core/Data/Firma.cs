@@ -8,8 +8,15 @@ namespace CLSeyirDefteri.Core.Data
 {
     public class Firma
     {
+       
+  
+
         public int FirmaId { get; set; }
         public string FirmaAdi { get; set; }
+        public override string ToString()
+        {
+            return FirmaAdi;
+        }
 
     }
 }

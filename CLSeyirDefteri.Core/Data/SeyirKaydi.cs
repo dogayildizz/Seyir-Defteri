@@ -15,5 +15,9 @@ namespace CLSeyirDefteri.Core.Data
         public string UgrayacagiLiman { get; set; }
         public string VarisLimani { get; set; }
         public string CikisLimani { get; set; }
+        public override string ToString()
+        {
+            return Gemi.GemiAdi+" "+LimandanCikisTarihi.ToShortDateString()+" "+LimanaVarisTarihi.ToShortDateString();
+        }
     }
 }

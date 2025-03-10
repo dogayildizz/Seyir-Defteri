@@ -5,6 +5,8 @@ namespace WFASeyirDefteri.UI
 {
     public partial class FRMSeyirEkrani : Form
     {
+
+        public static List<SeyirKaydi> SeyirKayitlari = new List<SeyirKaydi>();
         int id = 0;
         public void GemiEkle()
         {
@@ -117,15 +119,17 @@ namespace WFASeyirDefteri.UI
                 MessageBox.Show("Sefer sýrasýnda girilen duraklar farklý olmak zorundadýr");
                 return;
             }
+            //Yeni bir seyir kaydý oluþturduk.
+            SeyirKaydi seyirKaydi = new SeyirKaydi()
+            {
+                LimandanCikisTarihi = dtpCikisTarihi.Value,
+                LimanaVarisTarihi = dtpVarisTarihi.Value,
+                CikisLimani = cmbCikisLimani.SelectedItem.ToString(),
+                UgrayacagiLiman = cmbUgradigiLiman.SelectedItem.ToString(),
+                VarisLimani = cmbVarisLimani.SelectedItem.ToString(),
+                Gemi = cmbGemi.SelectedItem as Gemi
 
-            SeyirKaydi seyirKaydi = new SeyirKaydi();  //Yeni bir seyir kaydý oluþturduk.
-
-            seyirKaydi.LimandanCikisTarihi = dtpCikisTarihi.Value;
-            seyirKaydi.LimanaVarisTarihi = dtpVarisTarihi.Value;
-            seyirKaydi.CikisLimani = cmbCikisLimani.SelectedItem.ToString();
-            seyirKaydi.UgrayacagiLiman = cmbUgradigiLiman.SelectedItem.ToString();
-            seyirKaydi.VarisLimani = cmbVarisLimani.SelectedItem.ToString();
-            seyirKaydi.Gemi = cmbGemi.SelectedItem as Gemi;
+            };
 
             ListViewItem listViewItem = new ListViewItem();
             listViewItem.Text = (++id).ToString();
@@ -137,6 +141,8 @@ namespace WFASeyirDefteri.UI
             listViewItem.SubItems.Add(seyirKaydi.LimanaVarisTarihi.ToShortDateString());
 
             lvSeferler.Items.Add(listViewItem);
+            //static listemize sayir kaydýný ekliyoruz.
+            SeyirKayitlari.Add(seyirKaydi);
             Temizle();
         }
 
@@ -150,8 +156,21 @@ namespace WFASeyirDefteri.UI
             cmbCikisLimani.SelectedItem = null;
             cmbUgradigiLiman.SelectedItem = null;
             cmbVarisLimani.SelectedItem = null;
-            dtpCikisTarihi.Value = DateTime.Now;
-            dtpVarisTarihi.Value = DateTime.Now;
+            dtpCikisTarihi.Value = DateTime.Today;
+            dtpVarisTarihi.Value = DateTime.Today;
+        }
+
+        private void btnGec_Click(object sender, EventArgs e)
+        {
+            if(SeyirKayitlari.Count>0)
+            {
+                FRMGonderim fRMGonderim = new FRMGonderim(SeyirKayitlari);
+                fRMGonderim.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Lütfen seyirlerinizi listeye ekleyiniz.");
+            }
         }
     }
 }

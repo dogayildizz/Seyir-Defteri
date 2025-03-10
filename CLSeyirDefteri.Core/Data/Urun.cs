@@ -12,5 +12,9 @@ namespace CLSeyirDefteri.Core.Data
     {
         public int UrunId { get; set; }
         public string UrunAdi { get; set; }
+        public override string ToString()
+        {
+            return UrunAdi;
+        }
     }
 }
