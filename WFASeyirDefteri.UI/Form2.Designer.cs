@@ -42,6 +42,7 @@
             label6 = new Label();
             lvGonderim = new ListView();
             btnUrunEkle = new Button();
+            btnGec = new Button();
             ((System.ComponentModel.ISupportInitialize)nudTonaj).BeginInit();
             SuspendLayout();
             // 
@@ -169,19 +170,31 @@
             // btnUrunEkle
             // 
             btnUrunEkle.Font = new Font("Times New Roman", 10.8F);
-            btnUrunEkle.Location = new Point(582, 249);
+            btnUrunEkle.Location = new Point(519, 249);
             btnUrunEkle.Name = "btnUrunEkle";
             btnUrunEkle.Size = new Size(200, 54);
             btnUrunEkle.TabIndex = 7;
-            btnUrunEkle.Text = "button1";
+            btnUrunEkle.Text = "Ürün Ekle";
             btnUrunEkle.UseVisualStyleBackColor = true;
             btnUrunEkle.Click += btnUrunEkle_Click;
+            // 
+            // btnGec
+            // 
+            btnGec.Font = new Font("Times New Roman", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            btnGec.Location = new Point(736, 249);
+            btnGec.Name = "btnGec";
+            btnGec.Size = new Size(200, 54);
+            btnGec.TabIndex = 8;
+            btnGec.Text = "Geç";
+            btnGec.UseVisualStyleBackColor = true;
+            btnGec.Click += btnGec_Click;
             // 
             // FRMGonderim
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(978, 623);
+            Controls.Add(btnGec);
             Controls.Add(btnUrunEkle);
             Controls.Add(lvGonderim);
             Controls.Add(label6);
@@ -220,5 +233,6 @@
         private Label label6;
         private ListView lvGonderim;
         private Button btnUrunEkle;
+        private Button btnGec;
     }
 }

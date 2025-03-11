@@ -17,14 +17,7 @@ namespace WFASeyirDefteri.UI
         {
             foreach (SeyirKaydi seyirKaydi in seyirKayitlari)
             {
-                if (seyirKaydi.Gemi == null)
-                {
-                    MessageBox.Show("Sefer kayıtlarındaki gemi bilgisi eksik.");
-                    return;
-                }
                 cmbSeferler.Items.Add(seyirKaydi);
-
-
             }
         }
 
@@ -121,22 +114,16 @@ namespace WFASeyirDefteri.UI
                 MessageBox.Show("Lütfen firma seçiniz.");
                 return;
             }
-            if(string.IsNullOrWhiteSpace(txtUrun.Text))
+            if (string.IsNullOrWhiteSpace(txtUrun.Text))
             {
                 MessageBox.Show("Ürün adı boş olamaz.");
                 return;
             }
             SeyirKaydi seciliSeyir = cmbSeferler.SelectedItem as SeyirKaydi;
 
-            if(seciliSeyir.Gemi == null || seciliSeyir == null)
-            {
-                MessageBox.Show("Geçerli bir sefer seçilmedi ya da gemi bilgisi eksik.");
-                return;
-            }
-
             seciliGemi = seciliSeyir.Gemi;
 
-            if(nudTonaj.Value<0||seciliGemi.Tonaji<nudTonaj.Value)
+            if (nudTonaj.Value < 0 || seciliGemi.Tonaji < nudTonaj.Value)
             {
                 MessageBox.Show("Geminin tonajı büyük bir değer giremez");
                 return;
@@ -152,6 +139,48 @@ namespace WFASeyirDefteri.UI
             gonderim.IlgilenenKisi.KisininTelefonu = mtxtKisiTelNo.Text;
             gonderim.IlgilenenKisi.IlgilenenKisiId = ilgilenenKisiId++;
             gonderim.IlgilenenKisi.BagliOlduguFirma = cmbFirma.SelectedItem as Firma;
+
+            ListViewItem listViewItem = new ListViewItem();
+            listViewItem.Text = (++id).ToString();
+            listViewItem.SubItems.Add(gonderim.Tonaj.ToString());
+            listViewItem.SubItems.Add(gonderim.Urun.UrunAdi.ToString());
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.BagliOlduguFirma.FirmaAdi.ToString());
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.KisininAdi.ToString());
+            listViewItem.SubItems.Add(gonderim.IlgilenenKisi.KisininTelefonu.ToString());
+
+            //to do
+            //burada herbir list item ımın tag kontrolüne gönderim nesnesini gizledim.
+            
+            listViewItem.Tag = gonderim;
+
+            //burada list itemlarımı listview içerisine ekleme yaptım.
+            lvGonderim.Items.Add(listViewItem);
+            Temizle();
+
+
+
+
+
+        }
+
+        private void btnGec_Click(object sender, EventArgs e)
+        {
+            if(lvGonderim.Items.Count>0)
+            {
+                //bir gönderim listesi oluşturduk.
+                List<Gonderim> gonderimler = new List<Gonderim>();
+                //burada daha önce eklediğim list itemlarımı listview içinde dönerek her list itemin tagine ulaştım orada gönderim nesnesi vardı ben de bunları bir gönderim listesine ekledim. 
+
+                foreach (ListViewItem item in lvGonderim.Items)
+                {
+                    gonderimler.Add((Gonderim)item.Tag);
+                }
+
+
+                //eklediğim gönderim listesini form3te çağırdım.
+                FRMZRaporu fRMZRaporu = new FRMZRaporu(gonderimler);
+                fRMZRaporu.Show();
+            }
         }
     }
 }

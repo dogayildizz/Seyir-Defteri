@@ -15,7 +15,7 @@ namespace CLSeyirDefteri.Core.Data
 
         public override string ToString()
         {
-            return KisininAdi+" "+;
+            return KisininAdi;
         }
     }
 }
