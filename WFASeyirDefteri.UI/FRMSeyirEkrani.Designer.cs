@@ -196,7 +196,7 @@
             // btnGec
             // 
             btnGec.BackColor = SystemColors.ButtonFace;
-            btnGec.Font = new Font("Times New Roman", 15F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            btnGec.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
             btnGec.Location = new Point(381, 256);
             btnGec.Name = "btnGec";
             btnGec.Size = new Size(202, 56);

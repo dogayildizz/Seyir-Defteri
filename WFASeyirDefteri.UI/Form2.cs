@@ -122,10 +122,10 @@ namespace WFASeyirDefteri.UI
             SeyirKaydi seciliSeyir = cmbSeferler.SelectedItem as SeyirKaydi;
 
             seciliGemi = seciliSeyir.Gemi;
-
+            
             if (nudTonaj.Value < 0 || seciliGemi.Tonaji < nudTonaj.Value)
             {
-                MessageBox.Show("Geminin tonajı büyük bir değer giremez");
+                MessageBox.Show("Geçersiz tonaj değeri!");
                 return;
             }
             gonderim.SeyirKaydi = cmbSeferler.SelectedItem as SeyirKaydi;
@@ -148,18 +148,14 @@ namespace WFASeyirDefteri.UI
             listViewItem.SubItems.Add(gonderim.IlgilenenKisi.KisininAdi.ToString());
             listViewItem.SubItems.Add(gonderim.IlgilenenKisi.KisininTelefonu.ToString());
 
-            //to do
-            //burada herbir list item ımın tag kontrolüne gönderim nesnesini gizledim.
+            //burada her bir list item ımın tag kontrolüne gönderim nesnesini gizledim.
+            //tag kontrolü forma özeldir.
             
             listViewItem.Tag = gonderim;
 
             //burada list itemlarımı listview içerisine ekleme yaptım.
             lvGonderim.Items.Add(listViewItem);
             Temizle();
-
-
-
-
 
         }
 
@@ -170,6 +166,7 @@ namespace WFASeyirDefteri.UI
                 //bir gönderim listesi oluşturduk.
                 List<Gonderim> gonderimler = new List<Gonderim>();
                 //burada daha önce eklediğim list itemlarımı listview içinde dönerek her list itemin tagine ulaştım orada gönderim nesnesi vardı ben de bunları bir gönderim listesine ekledim. 
+                //cast etme nedenimiz, tag içine her şeyi alabildiği için object türünde.
 
                 foreach (ListViewItem item in lvGonderim.Items)
                 {
