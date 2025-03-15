@@ -34,12 +34,14 @@
             btnMailAt = new Button();
             btnPDFOlustur = new Button();
             btnExcelOlustur = new Button();
+            txtMailAdresi = new TextBox();
+            label1 = new Label();
             SuspendLayout();
             // 
             // dtpBaslangic
             // 
             dtpBaslangic.Font = new Font("Times New Roman", 12F);
-            dtpBaslangic.Location = new Point(81, 90);
+            dtpBaslangic.Location = new Point(81, 49);
             dtpBaslangic.Name = "dtpBaslangic";
             dtpBaslangic.Size = new Size(250, 30);
             dtpBaslangic.TabIndex = 0;
@@ -48,7 +50,7 @@
             // dtpBitis
             // 
             dtpBitis.Font = new Font("Times New Roman", 12F);
-            dtpBitis.Location = new Point(802, 90);
+            dtpBitis.Location = new Point(802, 49);
             dtpBitis.Name = "dtpBitis";
             dtpBitis.Size = new Size(250, 30);
             dtpBitis.TabIndex = 0;
@@ -57,9 +59,9 @@
             // lvZRaporu
             // 
             lvZRaporu.Font = new Font("Times New Roman", 12F);
-            lvZRaporu.Location = new Point(81, 165);
+            lvZRaporu.Location = new Point(81, 112);
             lvZRaporu.Name = "lvZRaporu";
-            lvZRaporu.Size = new Size(971, 412);
+            lvZRaporu.Size = new Size(971, 390);
             lvZRaporu.TabIndex = 1;
             lvZRaporu.UseCompatibleStateImageBehavior = false;
             // 
@@ -73,12 +75,13 @@
             btnMailAt.TabIndex = 2;
             btnMailAt.Text = "Excel Dosyasını Mail At";
             btnMailAt.UseVisualStyleBackColor = false;
+            btnMailAt.Click += btnMailAt_Click;
             // 
             // btnPDFOlustur
             // 
             btnPDFOlustur.BackColor = SystemColors.ButtonFace;
             btnPDFOlustur.Font = new Font("Times New Roman", 12F);
-            btnPDFOlustur.Location = new Point(301, 595);
+            btnPDFOlustur.Location = new Point(81, 523);
             btnPDFOlustur.Name = "btnPDFOlustur";
             btnPDFOlustur.Size = new Size(202, 56);
             btnPDFOlustur.TabIndex = 2;
@@ -98,11 +101,31 @@
             btnExcelOlustur.UseVisualStyleBackColor = false;
             btnExcelOlustur.Click += btnExcelOlustur_Click;
             // 
+            // txtMailAdresi
+            // 
+            txtMailAdresi.Location = new Point(731, 562);
+            txtMailAdresi.Name = "txtMailAdresi";
+            txtMailAdresi.Size = new Size(321, 27);
+            txtMailAdresi.TabIndex = 3;
+            txtMailAdresi.Text = "example@gmail.com";
+            txtMailAdresi.Click += txtMailAdresi_Click;
+            // 
+            // label1
+            // 
+            label1.Location = new Point(731, 503);
+            label1.Name = "label1";
+            label1.Size = new Size(321, 56);
+            label1.TabIndex = 4;
+            label1.Text = "Göndermek istediğiniz mail adresini giriniz : (Yalnızca gmail)";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // FRMZRaporu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1144, 684);
+            Controls.Add(label1);
+            Controls.Add(txtMailAdresi);
             Controls.Add(btnExcelOlustur);
             Controls.Add(btnPDFOlustur);
             Controls.Add(btnMailAt);
@@ -110,8 +133,9 @@
             Controls.Add(dtpBitis);
             Controls.Add(dtpBaslangic);
             Name = "FRMZRaporu";
-            Text = "FRMZRaporu";
+            Text = "Sefer Kaydı Belge Oluştur";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -122,5 +146,7 @@
         private Button btnMailAt;
         private Button btnPDFOlustur;
         private Button btnExcelOlustur;
+        private TextBox txtMailAdresi;
+        private Label label1;
     }
 }

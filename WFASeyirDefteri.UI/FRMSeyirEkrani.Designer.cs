@@ -58,6 +58,7 @@
             // 
             // cmbGemi
             // 
+            cmbGemi.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGemi.Font = new Font("Times New Roman", 12F);
             cmbGemi.FormattingEnabled = true;
             cmbGemi.Location = new Point(271, 108);
@@ -110,6 +111,7 @@
             // 
             // cmbCikisLimani
             // 
+            cmbCikisLimani.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCikisLimani.Font = new Font("Times New Roman", 12F);
             cmbCikisLimani.FormattingEnabled = true;
             cmbCikisLimani.Location = new Point(271, 142);
@@ -120,6 +122,7 @@
             // 
             // cmbUgradigiLiman
             // 
+            cmbUgradigiLiman.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUgradigiLiman.Font = new Font("Times New Roman", 12F);
             cmbUgradigiLiman.FormattingEnabled = true;
             cmbUgradigiLiman.Location = new Point(271, 176);
@@ -130,6 +133,7 @@
             // 
             // cmbVarisLimani
             // 
+            cmbVarisLimani.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbVarisLimani.Font = new Font("Times New Roman", 12F);
             cmbVarisLimani.FormattingEnabled = true;
             cmbVarisLimani.Location = new Point(271, 210);
@@ -227,9 +231,11 @@
             Controls.Add(label3);
             Controls.Add(label1);
             Font = new Font("Times New Roman", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 3, 4, 3);
+            MinimizeBox = false;
             Name = "FRMSeyirEkrani";
-            Text = "Form1";
+            Text = "Gemi Seferi Ekle";
             Load += FRMSeyirEkrani_Load;
             ResumeLayout(false);
             PerformLayout();

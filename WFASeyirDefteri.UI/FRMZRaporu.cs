@@ -9,6 +9,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +20,7 @@ namespace WFASeyirDefteri.UI
 {
     public partial class FRMZRaporu : Form
     {
+        decimal kalanTonaj;
         private List<Gonderim> Gonderimler;
         public FRMZRaporu(List<Gonderim> gonderimler) : this()
         {
@@ -31,15 +35,17 @@ namespace WFASeyirDefteri.UI
 
         }
 
-        decimal kalanTonaj;
-
+       
+        /// <summary>
+        /// ListView in sütunları ve sütunlarının başlıkları oluşturuldu.
+        /// </summary>
         public void ListViewTaslakOlustur()
         {
 
             lvZRaporu.View = View.Details;
             lvZRaporu.GridLines = true;
 
-            lvZRaporu.Columns.Add("Gemi", 250, HorizontalAlignment.Center);
+            lvZRaporu.Columns.Add("Gemi", 250, HorizontalAlignment.Center); 
             lvZRaporu.Columns.Add("Çıkış Tarihi", 120, HorizontalAlignment.Center);
             lvZRaporu.Columns.Add("Varış Tarihi", 120, HorizontalAlignment.Center);
             lvZRaporu.Columns.Add("Ürün", 100, HorizontalAlignment.Center);
@@ -54,22 +60,33 @@ namespace WFASeyirDefteri.UI
             DateTime baslangicTarihi = dtpBaslangic.Value.Date;
             DateTime bitisTarihi = dtpBitis.Value.Date;
 
+            //where -> benim dtp içindeki zaman aralığım ile seferlerimin zaman aralığının uyuşması lazım, onun için burada where sorgusu yazdık.
+            //groupby -> gemileri kendi içlerinde grupladım( her seferdeki seçilen gemi sadece kendi içinde gruplandı yani titanic 5 ürün taşıyorsa sadece titanik olarak alındı eklenen diğer gemiler de 
+            //bunları birer listeye dönüştürdük -> tolist -> burada gruplara yani 5 tane aynı gemiye ürün varsa her birini listeledik
 
-            decimal toplamKullanilanTonaj = 0;
-            decimal gemiTonaji = 0;
+            var gemiBazliGonderimler = Gonderimler
+                .Where(g => g.SeyirKaydi.LimandanCikisTarihi.Date >= baslangicTarihi && g.SeyirKaydi.LimanaVarisTarihi.Date <= bitisTarihi)
+                .GroupBy(g => g.SeyirKaydi.Gemi.GemiAdi)
+                .ToList();
 
-            foreach (Gonderim gonderim in Gonderimler)
+            lvZRaporu.Items.Clear();
+            foreach (var grup in gemiBazliGonderimler)
             {
-                DateTime limandanCikisTarihi = gonderim.SeyirKaydi.LimandanCikisTarihi.Date;
-                DateTime limanaVarisTarihi = gonderim.SeyirKaydi.LimanaVarisTarihi.Date;
-                if (limandanCikisTarihi >= baslangicTarihi && limanaVarisTarihi <= bitisTarihi)
+                //yukarıda listelediğimiz gemileri kendi içinde de gönderim olarak ayrıştırdık.
+
+                //grup.First() ilk itemi al demek
+                // ?. (null conditional operator), SeyirKaydi.Gemi nesnesinin null olup olmadığını kontrol eder.
+                //Eğer SeyirKaydi veya Gemi null ise, Tonaji özelliğine erişmeye çalışırken hata vermez, doğrudan null döner.
+                //?? ise eğer ki SeyirKaydi.Gemi null ise sağındaki değeri(0) al demek.
+                decimal gemiTonaji = grup.First().SeyirKaydi.Gemi?.Tonaji ?? 0;
+
+                decimal toplamKullanilanTonaj = 0;
+
+                foreach (Gonderim gonderim in grup)
                 {
-                    if (gemiTonaji == 0)
-                    {
-                        gemiTonaji = gonderim.SeyirKaydi.Gemi.Tonaji;
-                    }
+                    //burada kalan tonajı hesapladık
                     toplamKullanilanTonaj += gonderim.Tonaj;
-                    kalanTonaj = gemiTonaji - toplamKullanilanTonaj;
+                    decimal kalanTonaj = gemiTonaji - toplamKullanilanTonaj;
 
                     ListViewItem listViewItem = new ListViewItem();
 
@@ -86,7 +103,7 @@ namespace WFASeyirDefteri.UI
                     }
                     else
                     {
-                        listViewItem.SubItems.Add("Gemi tonajından fazla yük yüklenmiştir.");
+                        listViewItem.SubItems.Add("Gemi battı!");
                     }
                     lvZRaporu.Items.Add(listViewItem);
 
@@ -94,11 +111,7 @@ namespace WFASeyirDefteri.UI
             }
 
 
-
-
         }
-
-
 
         private void dtpBaslangic_ValueChanged(object sender, EventArgs e)
         {
@@ -135,7 +148,15 @@ namespace WFASeyirDefteri.UI
                     workSheet.Cell(1, 6).Value = "Ürün Yükü";
                     workSheet.Cell(1, 7).Value = "Kalan Tonaj";
 
-                    workSheet.Columns().AdjustToContents(); //sütun genişliklerini otomatik ayarlamak için AdjustToContents() metodunu kullandık. Bu metod, sütundaki en uzun içeriğe göre genişliği ayarlar.
+                    // exceldeki sütunların genişliğini belirledim.
+                    workSheet.Column(1).Width = 26;
+                    workSheet.Column(2).Width = 15;
+                    workSheet.Column(3).Width = 15;
+                    workSheet.Column(4).Width = 22;
+                    workSheet.Column(5).Width = 65;
+                    workSheet.Column(6).Width = 13;
+                    workSheet.Column(7).Width = 15;
+
 
                     int satir = 2;
                     foreach (ListViewItem item in lvZRaporu.Items)
@@ -146,6 +167,8 @@ namespace WFASeyirDefteri.UI
                         workSheet.Cell(satir, 3).Value = item.SubItems[2].Text;
                         workSheet.Cell(satir, 4).Value = item.SubItems[3].Text;
                         workSheet.Cell(satir, 5).Value = item.SubItems[4].Text;
+                        workSheet.Cell(satir, 6).Value = item.SubItems[5].Text;
+                        workSheet.Cell(satir, 7).Value = item.SubItems[6].Text;
                         satir++;
                     }
 
@@ -176,15 +199,15 @@ namespace WFASeyirDefteri.UI
         {
             try
             {
-                
+
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter= "PDF Dosyaları (*.pdf)|*.pdf"; //Dosya türü
+                saveFileDialog.Filter = "PDF Dosyası|*.pdf"; //Dosya türü
                 saveFileDialog.Title = "PDF Dosyası Kaydet"; //Pencere başlığı
 
-                if(saveFileDialog.ShowDialog() == DialogResult.OK) //Kullanıcı açılan pencerede OK(tamam,evet,vs.. bir onay tuşuna) basarsa: (DialogResult.OK bu anlama geliyor. Zıttı ise(onaylamama durumu)  DialogResult.Cancel)
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) //Kullanıcı açılan pencerede OK(tamam,evet,vs.. bir onay tuşuna) basarsa: (DialogResult.OK bu anlama geliyor. Zıttı ise(onaylamama durumu)  DialogResult.Cancel)
                 {
                     Document document = new Document(); //Document sınıfı, iTextSharp kütüphanesinde bir PDF belgesini temsil eder.
-                    PdfWriter.GetInstance(document,new FileStream(saveFileDialog.FileName, FileMode.Create));
+                    PdfWriter.GetInstance(document, new FileStream(saveFileDialog.FileName, FileMode.Create));
                     document.Open();
 
                     PdfPTable table = new PdfPTable(lvZRaporu.Columns.Count);
@@ -196,9 +219,9 @@ namespace WFASeyirDefteri.UI
                         pdfPCell.BackgroundColor = BaseColor.LIGHT_GRAY;
                         table.AddCell(pdfPCell);
                     }
-                    foreach(ListViewItem item in lvZRaporu.Items)
+                    foreach (ListViewItem item in lvZRaporu.Items)
                     {
-                        foreach(ListViewItem.ListViewSubItem subItem in item.SubItems)
+                        foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
                         {
                             table.AddCell(subItem.Text);
                         }
@@ -214,6 +237,66 @@ namespace WFASeyirDefteri.UI
 
                 throw;
             }
+        }
+
+        private void btnMailAt_Click(object sender, EventArgs e)
+        {
+            string gonderimYapilacakMailAdresi = txtMailAdresi.Text;
+            if(!gonderimYapilacakMailAdresi.EndsWith("@gmail.com"))
+            {
+                MessageBox.Show("Yalnızca gmail uzantılı mail adresi girmelisiniz!");
+                txtMailAdresi.Text = "example@gmail.com";
+                return;
+            }
+
+            try
+            {
+                string excelDosyaYolu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "GönderimZRaporu.xlsx");
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Sefer Listesi"); 
+                    for (int col = 0; col < lvZRaporu.Columns.Count; col++)
+                    {
+                        worksheet.Cell(1, col + 1).Value = lvZRaporu.Columns[col].Text;
+                    }
+                    int row = 2;
+                    foreach (ListViewItem item in lvZRaporu.Items)
+                    {
+                        for (int i = 0; i < item.SubItems.Count; i++)
+                        {
+                            worksheet.Cell(row, i + 1).Value = item.SubItems[i].Text;
+                        }
+                        row++;
+                    }
+                    workbook.SaveAs(excelDosyaYolu);
+                }
+                MailMessage mailMessage = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
+
+                mailMessage.From = new MailAddress("dogayildizyzl@gmail.com");  //gönderen kişinin mail adresi
+                mailMessage.To.Add(txtMailAdresi.Text);  //gönderdiğim kişinin mail adresi
+                mailMessage.Subject = "Gönderimin Z Raporu";
+                mailMessage.Body = "Merhaba iyi çalışmalar, \nEkteki dosya gönderimin z raporudur.";
+
+                mailMessage.Attachments.Add(new Attachment(excelDosyaYolu));
+
+                smtpClient.Port = 587;
+                smtpClient.Credentials = new NetworkCredential("dogayildizyzl@gmail.com", "rrfnaejkrnpkwwlq"); //gönderen eposta, uygulama şifresi google hesaplardan
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(mailMessage);
+                MessageBox.Show("E posta başarıyla gönderildi!");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private void txtMailAdresi_Click(object sender, EventArgs e)
+        {
+            txtMailAdresi.Clear();            
         }
     }
 }

@@ -48,6 +48,7 @@
             // 
             // cmbSeferler
             // 
+            cmbSeferler.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSeferler.Font = new Font("Times New Roman", 12F);
             cmbSeferler.FormattingEnabled = true;
             cmbSeferler.Location = new Point(271, 39);
@@ -57,6 +58,7 @@
             // 
             // cmbFirma
             // 
+            cmbFirma.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFirma.Font = new Font("Times New Roman", 12F);
             cmbFirma.FormattingEnabled = true;
             cmbFirma.Location = new Point(271, 146);
@@ -212,6 +214,7 @@
             Controls.Add(cmbFirma);
             Controls.Add(cmbSeferler);
             Name = "FRMGonderim";
+            Text = "Sefer Bilgileri Ekle";
             Load += FRMGonderim_Load;
             ((System.ComponentModel.ISupportInitialize)nudTonaj).EndInit();
             ResumeLayout(false);
